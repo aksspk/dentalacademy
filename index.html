@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lumière Dental — Premium Dental Care</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f1ec;
+    --bg-2:#ebe6df;
+    --ink:#111111;
+    --muted:#6b6b6b;
+    --accent:#6b8e7f;
+    --accent-2:#cdd6c9;
+    --cream:#efe9df;
+  }
+  *{box-sizing:border-box}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-0.02em}
+  .grain::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.06;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/></svg>");
+  }
+  .nav-blur{backdrop-filter:blur(14px);background:rgba(244,241,236,.6);border:1px solid rgba(0,0,0,.06)}
+  .btn-pill{
+    display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.4rem;border-radius:999px;
+    background:var(--ink);color:#fff;font-size:.9rem;font-weight:500;transition:all .3s;
+  }
+  .btn-pill:hover{background:var(--accent);transform:translateY(-2px)}
+  .btn-outline{
+    display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.4rem;border-radius:999px;
+    background:transparent;color:var(--ink);font-size:.9rem;font-weight:500;border:1px solid rgba(0,0,0,.2);transition:all .3s;
+  }
+  .btn-outline:hover{background:var(--ink);color:#fff}
+  .tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .9rem;border-radius:999px;background:rgba(0,0,0,.05);font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .dot{width:6px;height:6px;border-radius:999px;background:var(--accent);display:inline-block}
+  
+  /* Hero */
+  .hero-wrap{position:relative;height:100vh;overflow:hidden}
+  .hero-img{position:absolute;inset:0;background-size:cover;background-position:center;will-change:transform,opacity}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.5) 100%)}
+  .hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 5vw 8vh;color:#fff;z-index:2}
+  .huge{font-size:clamp(3rem,11vw,12rem);line-height:.92;letter-spacing:-0.04em}
+  .marquee{display:flex;gap:3rem;white-space:nowrap;animation:scroll 35s linear infinite}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  
+  /* Pinned scrolling */
+  .pin-section{position:relative;height:300vh}
+  .pin-inner{position:sticky;top:0;height:100vh;overflow:hidden}
+  
+  .card{background:#fff;border-radius:24px;padding:2rem;border:1px solid rgba(0,0,0,.05);transition:all .4s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(0,0,0,.08)}
+  .service-card{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5;background:#000}
+  .service-card img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:transform .8s, opacity .4s}
+  .service-card:hover img{transform:scale(1.08);opacity:1}
+  .service-card .meta{position:absolute;inset:auto 0 0 0;padding:1.6rem;color:#fff;z-index:2}
+  .service-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));z-index:1}
+  
+  .doctor-card{border-radius:24px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.05)}
+  .doctor-card .ph{aspect-ratio:3/4;overflow:hidden;background:#ddd}
+  .doctor-card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+  .doctor-card:hover .ph img{transform:scale(1.05)}
+  
+  .marquee-track{overflow:hidden;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1);padding:2.2rem 0}
+  
+  .accordion-item{border-bottom:1px solid rgba(0,0,0,.1);padding:1.5rem 0;cursor:pointer}
+  .accordion-item .ans{max-height:0;overflow:hidden;transition:max-height .5s ease;color:var(--muted)}
+  .accordion-item.open .ans{max-height:300px;padding-top:1rem}
+  .accordion-item .plus{transition:transform .3s}
+  .accordion-item.open .plus{transform:rotate(45deg)}
+  
+  .stat-num{font-family:'Instrument Serif',serif;font-size:clamp(3rem,7vw,6rem);line-height:1;letter-spacing:-0.03em}
+  
+  input,textarea{background:transparent;border:none;border-bottom:1px solid rgba(0,0,0,.2);padding:1rem 0;width:100%;outline:none;font-size:1rem;transition:border-color .3s}
+  input:focus,textarea:focus{border-color:var(--ink)}
+  
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:#bbb;border-radius:8px}
+</style>
+</head>
+<body class="grain">
+
+<!-- NAV -->
+<nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 nav-blur rounded-full px-3 py-2 flex items-center gap-1 w-[min(96%,860px)]">
+  <a href="#" class="flex items-center gap-2 px-4 py-2">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 6 4 6 7c0 2 .5 4 1 6 .5 1.5 1 4 2 5 .8.8 1.5.2 2-1l1-3c.2-.6.8-.6 1 0l1 3c.5 1.2 1.2 1.8 2 1 1-1 1.5-3.5 2-5 .5-2 1-4 1-6 0-3-2-5-6-5h-1z" fill="#111"/></svg>
+    <span class="serif text-xl">Lumière</span>
+  </a>
+  <div class="hidden md:flex items-center gap-1 text-sm flex-1 justify-center">
+    <a href="#about" class="px-3 py-2 hover:opacity-60">About</a>
+    <a href="#services" class="px-3 py-2 hover:opacity-60">Services</a>
+    <a href="#team" class="px-3 py-2 hover:opacity-60">Team</a>
+    <a href="#treatments" class="px-3 py-2 hover:opacity-60">Treatments</a>
+    <a href="#contact" class="px-3 py-2 hover:opacity-60">Contact</a>
+  </div>
+  <a href="#contact" class="btn-pill text-xs !py-2 !px-4">Book Visit →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero-wrap" id="hero">
+  <div class="hero-img" id="heroImg" style="background-image:url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=2000&auto=format&fit=crop')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="flex items-center gap-3 mb-6">
+      <span class="dot"></span>
+      <span class="text-xs tracking-[.2em] uppercase opacity-90">Lumière Dental Studio · Est. 2009</span>
+    </div>
+    <h1 class="serif huge">Smiles, <em class="italic opacity-90">refined.</em></h1>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mt-8 gap-6">
+      <p class="max-w-md text-lg opacity-90 leading-relaxed">A modern dental studio where craftsmanship, comfort, and cutting-edge science come together to design healthier, brighter smiles.</p>
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="btn-pill" style="background:#fff;color:#111">Book a Consultation →</a>
+        <a href="#about" class="btn-outline" style="color:#fff;border-color:rgba(255,255,255,.4)">Discover</a>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs flex flex-col items-center gap-2 z-10">
+    <span class="tracking-[.3em] uppercase">Scroll</span>
+    <div class="w-[1px] h-10 bg-white/50"></div>
+  </div>
+</section>
+
+<!-- PINNED IMAGE TRANSITION -->
+<section class="pin-section">
+  <div class="pin-inner">
+    <div class="absolute inset-0 flex items-center justify-center bg-[var(--bg)]">
+      <div id="pinFrame" class="relative overflow-hidden rounded-[40px]" style="width:60vw;height:60vh">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2000&auto=format&fit=crop')"></div>
+      </div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6">
+        <p class="tag mb-6" style="background:rgba(255,255,255,.8)">— Our Philosophy</p>
+        <h2 class="serif text-center" style="font-size:clamp(2.5rem,7vw,6rem);line-height:1;max-width:14ch">
+          Precision care, <em class="italic" style="color:var(--accent)">gentle hands.</em>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="px-6 md:px-16 py-32">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+    <div class="md:col-span-5">
+      <p class="tag mb-6">— About the Clinic</p>
+      <h2 class="serif text-5xl md:text-6xl leading-[0.95] mb-6">A clinic where <em class="italic" style="color:var(--accent)">care</em> meets <em class="italic" style="color:var(--accent)">design.</em></h2>
+      <p class="text-[var(--muted)] leading-relaxed mb-6">
+        At Lumière Dental Studio, we believe a great dental experience begins with how a space makes you feel. Our award-winning clinic combines warm, minimal interiors with the latest digital dentistry — so every visit feels less like a procedure and more like wellness.
+      </p>
+      <p class="text-[var(--muted)] leading-relaxed mb-8">
+        From preventive checkups to full smile makeovers, our multidisciplinary team treats each patient with attentive, personalised care.
+      </p>
+      <div class="grid grid-cols-3 gap-6 mb-8">
+        <div><div class="stat-num">15+</div><p class="text-xs uppercase tracking-wider mt-2 text-[var(--muted)]">Years of practice</p></div>
+        <div><div class="stat-num">8k</div><p class="text-xs uppercase tracking-wider mt-2 text-[var(--muted)]">Happy patients</p></div>
+        <div><div class="stat-num">12</div><p class="text-xs uppercase tracking-wider mt-2 text-[var(--muted)]">Expert specialists</p></div>
+      </div>
+      <a href="#team" class="btn-pill">Meet the team →</a>
+    </div>
+    <div class="md:col-span-7 grid grid-cols-2 gap-4">
+      <div class="rounded-3xl overflow-hidden aspect-[3/4]">
+        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="">
+      </div>
+      <div class="space-y-4 mt-12">
+        <div class="rounded-3xl overflow-hidden aspect-square">
+          <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="">
+        </div>
+        <div class="rounded-3xl overflow-hidden aspect-[4/3]">
+          <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-track">
+  <div class="marquee serif text-5xl md:text-7xl">
+    <span>Cosmetic Dentistry</span><span style="color:var(--accent)">✦</span>
+    <span>Implants</span><span style="color:var(--accent)">✦</span>
+    <span>Orthodontics</span><span style="color:var(--accent)">✦</span>
+    <span>Whitening</span><span style="color:var(--accent)">✦</span>
+    <span>Pediatric Care</span><span style="color:var(--accent)">✦</span>
+    <span>Cosmetic Dentistry</span><span style="color:var(--accent)">✦</span>
+    <span>Implants</span><span style="color:var(--accent)">✦</span>
+    <span>Orthodontics</span><span style="color:var(--accent)">✦</span>
+    <span>Whitening</span><span style="color:var(--accent)">✦</span>
+    <span>Pediatric Care</span><span style="color:var(--accent)">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="px-6 md:px-16 py-32" style="background:var(--bg-2)">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div>
+        <p class="tag mb-6">— Our Services</p>
+        <h2 class="serif text-5xl md:text-7xl leading-[0.95] max-w-2xl">Comprehensive care, <em class="italic" style="color:var(--accent)">crafted</em> for you.</h2>
+      </div>
+      <p class="max-w-sm text-[var(--muted)]">From routine cleanings to advanced restorative work, our six core service areas cover every aspect of your oral health journey.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1581585504991-7e0833a7c0c1?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">01 — Preventive</p><h3 class="serif text-3xl">General Dentistry</h3></div>
+      </div>
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">02 — Aesthetic</p><h3 class="serif text-3xl">Cosmetic Dentistry</h3></div>
+      </div>
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1567522719960-acbd243a4ea8?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">03 — Restorative</p><h3 class="serif text-3xl">Dental Implants</h3></div>
+      </div>
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">04 — Alignment</p><h3 class="serif text-3xl">Orthodontics</h3></div>
+      </div>
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">05 — Brightening</p><h3 class="serif text-3xl">Teeth Whitening</h3></div>
+      </div>
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="meta"><p class="text-xs uppercase tracking-wider opacity-80 mb-2">06 — Family</p><h3 class="serif text-3xl">Pediatric Care</h3></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="px-6 md:px-16 py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div>
+        <p class="tag mb-6">— Our Doctors</p>
+        <h2 class="serif text-5xl md:text-7xl leading-[0.95] max-w-3xl">Meet the <em class="italic" style="color:var(--accent)">specialists</em> behind every smile.</h2>
+      </div>
+      <a href="#contact" class="btn-outline">Book with a doctor →</a>
+    </div>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="doctor-card">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop" alt=""></div>
+        <div class="p-5">
+          <h4 class="serif text-2xl">Dr. Elena Marchetti</h4>
+          <p class="text-sm text-[var(--muted)] mt-1">Lead Cosmetic Dentist</p>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1612531386530-97286d97c2d2?q=80&w=900&auto=format&fit=crop" alt=""></div>
+        <div class="p-5">
+          <h4 class="serif text-2xl">Dr. Julian Reyes</h4>
+          <p class="text-sm text-[var(--muted)] mt-1">Implant Specialist</p>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=900&auto=format&fit=crop" alt=""></div>
+        <div class="p-5">
+          <h4 class="serif text-2xl">Dr. Amara Singh</h4>
+          <p class="text-sm text-[var(--muted)] mt-1">Orthodontist</p>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=900&auto=format&fit=crop" alt=""></div>
+        <div class="p-5">
+          <h4 class="serif text-2xl">Dr. Noah Bennett</h4>
+          <p class="text-sm text-[var(--muted)] mt-1">Pediatric Dentist</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENTS / PROCESS -->
+<section id="treatments" class="px-6 md:px-16 py-32" style="background:var(--ink);color:#fff">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
+      <div>
+        <p class="tag mb-6" style="background:rgba(255,255,255,.08);color:#bbb">— Treatments</p>
+        <h2 class="serif text-5xl md:text-7xl leading-[0.95] max-w-3xl">Your <em class="italic" style="color:var(--accent-2)">journey</em> in four steps.</h2>
+      </div>
+      <p class="max-w-sm text-white/60">Each treatment plan is tailored to your goals, comfort, and lifestyle — guided by data, designed by experts.</p>
+    </div>
+    <div class="grid md:grid-cols-4 gap-px" style="background:rgba(255,255,255,.1)">
+      <div class="p-8 bg-[var(--ink)]">
+        <p class="serif text-5xl mb-6" style="color:var(--accent-2)">01</p>
+        <h4 class="text-xl font-medium mb-3">Consultation</h4>
+        <p class="text-white/60 text-sm leading-relaxed">A relaxed conversation, 3D scans, and a thorough oral health assessment.</p>
+      </div>
+      <div class="p-8 bg-[var(--ink)]">
+        <p class="serif text-5xl mb-6" style="color:var(--accent-2)">02</p>
+        <h4 class="text-xl font-medium mb-3">Smile Design</h4>
+        <p class="text-white/60 text-sm leading-relaxed">We create a digital preview of your future smile before any work begins.</p>
+      </div>
+      <div class="p-8 bg-[var(--ink)]">
+        <p class="serif text-5xl mb-6" style="color:var(--accent-2)">03</p>
+        <h4 class="text-xl font-medium mb-3">Treatment</h4>
+        <p class="text-white/60 text-sm leading-relaxed">Precise, comfortable procedures delivered with the latest dental technology.</p>
+      </div>
+      <div class="p-8 bg-[var(--ink)]">
+        <p class="serif text-5xl mb-6" style="color:var(--accent-2)">04</p>
+        <h4 class="text-xl font-medium mb-3">Aftercare</h4>
+        <p class="text-white/60 text-sm leading-relaxed">Lifelong follow-up, check-ins, and at-home care tailored to your needs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="px-6 md:px-16 py-32">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-16">
+      <p class="tag mb-6">— Testimonials</p>
+      <h2 class="serif text-5xl md:text-7xl leading-[0.95] max-w-3xl">Loved by <em class="italic" style="color:var(--accent)">patients,</em> trusted by families.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card">
+        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+        <p class="serif text-2xl leading-snug mb-6">"The most calming dental experience I've ever had. The team is genuinely caring and the results — incredible."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+          <div><p class="font-medium text-sm">Sophie L.</p><p class="text-xs text-[var(--muted)]">Veneers patient</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+        <p class="serif text-2xl leading-snug mb-6">"Dr. Reyes restored two implants for me with such precision. I forget they're there. Truly skilled craftsmanship."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+          <div><p class="font-medium text-sm">Marcus T.</p><p class="text-xs text-[var(--muted)]">Implant patient</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+        <p class="serif text-2xl leading-snug mb-6">"My kids actually look forward to their checkups. The pediatric team is warm, patient, and wonderful."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+          <div><p class="font-medium text-sm">Hannah K.</p><p class="text-xs text-[var(--muted)]">Family patient</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="px-6 md:px-16 py-32" style="background:var(--bg-2)">
+  <div class="max-w-4xl mx-auto">
+    <p class="tag mb-6">— FAQ</p>
+    <h2 class="serif text-5xl md:text-6xl leading-[0.95] mb-12">Questions, answered.</h2>
+    <div id="acc">
+      <div class="accordion-item">
+        <div class="flex justify-between items-center gap-6"><h4 class="text-xl font-medium">Do you accept insurance?</h4><span class="plus text-3xl font-light">+</span></div>
+        <div class="ans">Yes — we work with most major dental insurance providers. Our front desk team can verify your benefits before your first visit.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="flex justify-between items-center gap-6"><h4 class="text-xl font-medium">How do I book my first consultation?</h4><span class="plus text-3xl font-light">+</span></div>
+        <div class="ans">You can book directly via the form below, call us, or send us a message. We typically respond within a few hours during business days.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="flex justify-between items-center gap-6"><h4 class="text-xl font-medium">Are payment plans available?</h4><span class="plus text-3xl font-light">+</span></div>
+        <div class="ans">Yes. We offer flexible financing for restorative and cosmetic treatments. Our coordinator can walk you through the options.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="flex justify-between items-center gap-6"><h4 class="text-xl font-medium">Is the clinic family-friendly?</h4><span class="plus text-3xl font-light">+</span></div>
+        <div class="ans">Absolutely. Our pediatric team is highly experienced, and the clinic was designed with families in mind — calm, welcoming, and stress-free.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact" class="px-6 md:px-16 py-32">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+    <div>
+      <p class="tag mb-6">— Book a Visit</p>
+      <h2 class="serif text-5xl md:text-7xl leading-[0.95] mb-8">Let's design your <em class="italic" style="color:var(--accent)">best smile.</em></h2>
+      <p class="text-[var(--muted)] mb-10 max-w-md">Drop your details and our care team will reach out to schedule a complimentary consultation.</p>
+      
+      <div class="space-y-6 text-sm">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-[var(--muted)] mb-2">Visit Us</p>
+          <p>24 Belmont Avenue, Studio 3<br>Greenwich, London SE10 8XJ</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-widest text-[var(--muted)] mb-2">Call</p>
+          <p>+44 (0) 20 7946 0381</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-widest text-[var(--muted)] mb-2">Hours</p>
+          <p>Mon–Fri 8:00 – 19:00<br>Sat 9:00 – 14:00</p>
+        </div>
+      </div>
+    </div>
+    <form class="card !p-10" onsubmit="event.preventDefault();alert('Thank you! We\'ll be in touch within 24 hours.')">
+      <div class="grid grid-cols-2 gap-6 mb-2">
+        <input type="text" placeholder="First name" required>
+        <input type="text" placeholder="Last name" required>
+      </div>
+      <input type="email" placeholder="Email" required>
+      <input type="tel" placeholder="Phone">
+      <input type="text" placeholder="Service of interest">
+      <textarea rows="3" placeholder="Tell us a bit more (optional)"></textarea>
+      <button class="btn-pill mt-8 w-full justify-center">Request Appointment →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="px-6 md:px-16 py-12" style="background:var(--ink);color:#fff">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-10">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 6 4 6 7c0 2 .5 4 1 6 .5 1.5 1 4 2 5 .8.8 1.5.2 2-1l1-3c.2-.6.8-.6 1 0l1 3c.5 1.2 1.2 1.8 2 1 1-1 1.5-3.5 2-5 .5-2 1-4 1-6 0-3-2-5-6-5h-1z" fill="#fff"/></svg>
+          <span class="serif text-2xl">Lumière Dental</span>
+        </div>
+        <p class="text-white/50 text-sm max-w-xs">Premium dental care, designed with intention.</p>
+      </div>
+      <div class="flex gap-6 text-sm text-white/60">
+        <a href="#" class="hover:text-white">Instagram</a>
+        <a href="#" class="hover:text-white">Facebook</a>
+        <a href="#" class="hover:text-white">LinkedIn</a>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
+      <p>© 2025 Lumière Dental Studio. All rights reserved.</p>
+      <p>Privacy · Terms · Cookies</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero parallax + scale fade into pin
+gsap.to("#heroImg",{
+  scale:1.15, yPercent:-10,
+  scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}
+});
+gsap.to(".hero-content",{
+  yPercent:-30, opacity:0,
+  scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}
+});
+
+// Pinned section - expand image to full
+gsap.fromTo("#pinFrame",{width:"60vw",height:"60vh",borderRadius:"40px"},{
+  width:"100vw",height:"100vh",borderRadius:"0px",
+  scrollTrigger:{trigger:".pin-section",start:"top top",end:"bottom bottom",scrub:1}
+});
+
+// Reveal animations
+gsap.utils.toArray("section h2, section .tag, .card, .service-card, .doctor-card").forEach(el=>{
+  gsap.from(el,{
+    y:50, opacity:0, duration:1, ease:"power3.out",
+    scrollTrigger:{trigger:el,start:"top 85%"}
+  });
+});
+
+// Accordion
+document.querySelectorAll('.accordion-item').forEach(item=>{
+  item.addEventListener('click',()=>item.classList.toggle('open'));
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-20,behavior:'smooth'})}
+  });
+});
+</script>
+</body>
+</html>
