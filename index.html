@@ -264,32 +264,75 @@
   </div>
 </section>
 <!-- TESTIMONIALS -->
-<section class="px-6 md:px-16 py-32">
-  <div class="max-w-7xl mx-auto">
-    <div class="mb-16">
+<section class="px-6 md:px-16 py-20">
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-10">
       <p class="tag mb-6">— Testimonials</p>
-      <h2 class="serif text-5xl md:text-7xl leading-[0.95] max-w-3xl">Loved by <em class="italic" style="color:var(--accent)">candidates,</em> </h2>
+      <h2 class="serif text-4xl md:text-5xl leading-[0.95]">Loved by <em class="italic" style="color:var(--accent)">candidates,</em></h2>
     </div>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="card">
-        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
-        <p class="serif text-2xl leading-snug mb-6">"I can't even put into words how grateful I am for my time at Royal Dental Assistant Academy. Not only did I gain invaluable skills and knowledge, but the professors and staff truly cared about my success. The sense of community among the staff and students really enhanced my learning journey. The supportive environment fostered by the faculty truly sets this institution apart it's more than just school; it's a place that shaped me into the dental assistant I am today. Highly recommend!"-C</p>
+
+    <div class="flex items-center gap-4">
+      <button id="testiPrev" aria-label="Previous testimonial" class="shrink-0 w-10 h-10 rounded-full border flex items-center justify-center text-xl transition hover:bg-[var(--accent)] hover:text-white" style="border-color:var(--accent)">‹</button>
+
+      <div class="card flex-1 overflow-hidden" style="min-height:280px">
+        <div id="testiTrack" class="flex transition-transform duration-500 ease-out">
+          <div class="testi-slide w-full shrink-0 px-2">
+            <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+            <p class="serif text-xl leading-snug mb-4">"I can't even put into words how grateful I am for my time at Royal Dental Assistant Academy. Not only did I gain invaluable skills and knowledge, but the professors and staff truly cared about my success. The supportive environment fostered by the faculty truly shaped me into the dental assistant I am today. Highly recommend!"</p>
+            <p class="text-sm" style="opacity:.7">— C</p>
+          </div>
+          <div class="testi-slide w-full shrink-0 px-2">
+            <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+            <p class="serif text-xl leading-snug mb-4">"Had an amazing experience with Royal Dental Academy — they really have a passion to teach others. Would 100% recommend to anyone who is interested in the dental field." 🦷❤️</p>
+            <p class="text-sm" style="opacity:.7">— Karen</p>
+          </div>
+          <div class="testi-slide w-full shrink-0 px-2">
+            <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
+            <p class="serif text-xl leading-snug mb-4">"The top dental assistant academy around, with super knowledgeable, friendly, and reliable professors who give lots of help to students. It's a great place to get ready for a new career. Tuition assistance available!"</p>
+            <p class="text-sm" style="opacity:.7">— Lisa Driver, MI</p>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
-        <p class="serif text-2xl leading-snug mb-6">"Had an amazing experience with Royal Dental Academy they were amazing and really have a passion to teach others. Would 100% recommend to anyone who is interested in the dental field 🦷❤-Karen</p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="flex gap-1 mb-4 text-[var(--accent)]">★★★★★</div>
-        <p class="serif text-2xl leading-snug mb-6">The top dental assistant academy around, with super knowledgeable, friendly, and reliable professors who give lots of help to students. It's a great place to get ready for a new career. Tuition assistance available!Lisa Driver, MI</p>
-        </div>
-      </div>
+
+      <button id="testiNext" aria-label="Next testimonial" class="shrink-0 w-10 h-10 rounded-full border flex items-center justify-center text-xl transition hover:bg-[var(--accent)] hover:text-white" style="border-color:var(--accent)">›</button>
     </div>
+
+    <div id="testiDots" class="flex justify-center gap-2 mt-6"></div>
   </div>
 </section>
 
+<script>
+(function(){
+  const track = document.getElementById('testiTrack');
+  const slides = track.querySelectorAll('.testi-slide');
+  const dotsWrap = document.getElementById('testiDots');
+  let index = 0;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+    dot.className = 'w-2 h-2 rounded-full transition';
+    dot.style.background = i === 0 ? 'var(--accent)' : 'rgba(0,0,0,0.2)';
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+
+  function update(){
+    track.style.transform = `translateX(-${index * 100}%)`;
+    [...dotsWrap.children].forEach((dot, i) => {
+      dot.style.background = i === index ? 'var(--accent)' : 'rgba(0,0,0,0.2)';
+    });
+  }
+
+  function goTo(i){
+    index = (i + slides.length) % slides.length;
+    update();
+  }
+
+  document.getElementById('testiPrev').addEventListener('click', () => goTo(index - 1));
+  document.getElementById('testiNext').addEventListener('click', () => goTo(index + 1));
+})();
+</script>
 <!-- FAQ -->
 <section class="px-6 md:px-16 py-32" style="background:var(--bg-2)">
   <div class="max-w-4xl mx-auto">
@@ -348,9 +391,9 @@
 <section id="contact" class="px-6 md:px-16 py-32">
   <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
     <div>
-      <p class="tag mb-6">— Book a Visit</p>
-      <h2 class="serif text-5xl md:text-7xl leading-[0.95] mb-8">Let's design your <em class="italic" style="color:var(--accent)">best smile.</em></h2>
-      <p class="text-[var(--muted)] mb-10 max-w-md">Drop your details and our care team will reach out to schedule a complimentary consultation.</p>
+      <p class="tag mb-6">— Apply Now</p>
+      <h2 class="serif text-5xl md:text-7xl leading-[0.95] mb-8">Star Your New Career <em class="italic" style="color:var(--accent)">Now!</em></h2>
+      <p class="text-[var(--muted)] mb-10 max-w-md">Drop your details and our team will reach out.</p>
       
       <div class="space-y-6 text-sm">
         <div>
@@ -376,7 +419,6 @@
       <input type="tel" placeholder="Phone">
       <input type="text" placeholder="Service of interest">
       <textarea rows="3" placeholder="Tell us a bit more (optional)"></textarea>
-      <button class="btn-pill mt-8 w-full justify-center">Request Appointment →</button>
     </form>
   </div>
 </section>
@@ -399,7 +441,7 @@
       </div>
     </div>
     <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/40">
-      <p>© 2025 Lumière Dental Studio. All rights reserved.</p>
+      <p>© 2025 Royal Dental Assistant Academy. All rights reserved.</p>
       <p>Privacy · Terms · Cookies</p>
     </div>
   </div>
